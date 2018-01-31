@@ -6,8 +6,8 @@
  * Time: 13:56
  */
 
-DEFINE('DB_USER', 'root');
-DEFINE('DB_PASSWORD', '');
+DEFINE('DB_USER', 'userBlog');
+DEFINE('DB_PASSWORD', 'Super');
 DEFINE('DB_HOST', '127.0.0.1');
 DEFINE('DB_NAME', 'bdblog');
 ?>

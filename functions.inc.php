@@ -37,9 +37,8 @@ function comment($comment) {
 
     try {
         $db = myDatabase();
-        $sql = $db->prepare("INSERT INTO post (commentairea) VALUES (:comment)");
+        $sql = $db->prepare("INSERT INTO post (commentaire) VALUES (:comment)");
         $sql->bindParam(':comment', $comment, PDO::PARAM_STR);
-
         $sql->execute();
         return true;
 

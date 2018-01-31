@@ -5,6 +5,7 @@
  * Date: 24.01.2018
  * Time: 13:38
  */
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,9 +22,9 @@
     <form action="index.php" method="post" enctype="multipart/form-data">
         Commentaire : <textarea type="" name="comment" id="comment"></textarea>
         <br />
-        Image: <input type="file" multiple accept=".jpg,.jpeg,.png,.gif,.tiff" name="file" id="file" >
+        Image: <input type="file" multiple accept="image/*" name="file[]" id="file" >
             <br />
-        <input type="submit" value="Poster" >
+        <input type="submit" name="submit" value="Poster" >
     </form >
 </fieldset>
 </body>

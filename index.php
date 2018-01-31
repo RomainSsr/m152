@@ -7,16 +7,19 @@
  */
 require_once 'functions.inc.php';
 
-if(isset($_POST['comment']) && isset($_FILES['file']['name']) && isset($_FILES['file']['type']))
-{
-    for($i=0;$i<count($_FILES['file']['name']);$i++)
-    {
-        comment($_POST['comment']);
-        post($_FILES['file']['name'],$_FILES['file']['type']);
-        move_uploaded_file($_FILES['file']['tmp_name'],'img/'.$_FILES['file']['name']);
-    }
+if(isset($_POST['comment']) && isset($_FILES['file']['name']) && isset($_FILES['file']['type'])) {
+    $names = $_FILES['file']['name'];
+    $types = $_FILES['file']['type'];
+    $tmpNames = $_FILES['file']['tmp_name'];
 
+    for ($i = 0; $i < count($names); $i++) {
+        comment($_POST['comment']);
+        post($names[$i], $types[$i]);
+        move_uploaded_file($tmpNames[$i], 'img/' . $names[$i]);
+    }
+    $nbNamePost = getNamePost();
 }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -32,7 +35,7 @@ if(isset($_POST['comment']) && isset($_FILES['file']['name']) && isset($_FILES['
     <aside>
     <fieldset>
         <legend>Vos Posts</legend>
-        <?php  for($i=0;$i<count(getNamePost());$i++){echo '<img src="./img/'.getNamePost()[$i]['nomMedia'] .'" height="100" width="150"> </br>';}?>
+        <?php  for($i=0;$i<count($nbNamePost);$i++){echo '<img src="./img/'.$nbNamePost[$i]['nomMedia'] .'" height="100" width="150"> </br>';}?>
     </fieldset>
     </aside>
 
