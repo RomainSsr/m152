@@ -33,12 +33,28 @@ function myDatabase() {
  * Enregistre un commentaire en base
  * @return boolean si tout est ok ou pas
  */
-function register($comment, $fileName, $fileType) {
+function comment($comment) {
 
     try {
         $db = myDatabase();
-        $sql = $db->prepare("INSERT INTO post (commentaire,nomMedia,typeMedia) VALUES (:comment,:fileName,:fileType)");
+        $sql = $db->prepare("INSERT INTO post (commentairea) VALUES (:comment)");
         $sql->bindParam(':comment', $comment, PDO::PARAM_STR);
+
+        $sql->execute();
+        return true;
+
+    }
+    catch (PDOException $e) {
+        return false;
+    }
+
+}
+
+function post($fileName, $fileType) {
+
+    try {
+        $db = myDatabase();
+        $sql = $db->prepare("INSERT INTO media (nomFichierMedia,typeMedia) VALUES (:fileName,:fileType)");
         $sql->bindParam(':fileName', $fileName, PDO::PARAM_STR);
         $sql->bindParam(':fileType', $fileType, PDO::PARAM_STR);
         $sql->execute();
@@ -49,5 +65,20 @@ function register($comment, $fileName, $fileType) {
         return false;
     }
 
+}
+
+function getNamePost()
+{
+    try {
+        $db = myDatabase();
+        $sql = $db->prepare("SELECT nomFichierMedia FROM media ");
+        $sql->execute();
+        $result = $sql->fetchAll();
+        return $result;
+
+    }
+    catch (PDOException $e) {
+        return false;
+    }
 }
 ?>
