@@ -12,12 +12,12 @@ if(isset($_POST['comment']) && isset($_FILES['file']['name']) && isset($_FILES['
     $types = $_FILES['file']['type'];
     $tmpNames = $_FILES['file']['tmp_name'];
 
+    InsertPost($_POST['comment'],$names, $types);
+
     for ($i = 0; $i < count($names); $i++) {
-        comment($_POST['comment']);
-        post($names[$i], $types[$i]);
         move_uploaded_file($tmpNames[$i], 'img/' . $names[$i]);
     }
-    $nbNamePost = getNamePost();
+
 }
 
 ?>
@@ -35,7 +35,7 @@ if(isset($_POST['comment']) && isset($_FILES['file']['name']) && isset($_FILES['
     <aside>
     <fieldset>
         <legend>Vos Posts</legend>
-        <?php  for($i=0;$i<count($nbNamePost);$i++){echo '<img src="./img/'.$nbNamePost[$i]['nomMedia'] .'" height="100" width="150"> </br>';}?>
+        <?php  $nbNamePost = getPostAndAssociatedMedias();  for($i=0; $i<count($nbNamePost); $i++){echo '<img src="./img/'.utf8_encode($nbNamePost[$i]['nomFichierMedia'] ).'" height="100" width="150"> </br>';}?>
     </fieldset>
     </aside>
 

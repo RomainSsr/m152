@@ -33,46 +33,55 @@ function myDatabase() {
  * Enregistre un commentaire en base
  * @return boolean si tout est ok ou pas
  */
-function comment($comment) {
+function comment() {
+
+
+
+}
+
+function InsertPost($comment, $fileName, $fileType) {
+    $db = myDatabase();
 
     try {
-        $db = myDatabase();
+
+        $db->beginTransaction();
         $sql = $db->prepare("INSERT INTO post (commentaire) VALUES (:comment)");
         $sql->bindParam(':comment', $comment, PDO::PARAM_STR);
         $sql->execute();
+        $lastId = $db->lastInsertId();
+        $nbMedias = count($fileName);
+        for ($i=0;$i<$nbMedias;$i++) {
+            $sql = $db->prepare("INSERT INTO media (nomFichierMedia,typeMedia,idPost) VALUES (:fileName,:fileType,:idPost)");
+            $sql->bindParam(':fileName', $fileName[$i], PDO::PARAM_STR);
+            $sql->bindParam(':fileType', $fileType[$i], PDO::PARAM_STR);
+            $sql->bindParam(':idPost', $lastId, PDO::PARAM_INT);
+            $sql->execute();
+        }
+        $db->commit();
         return true;
-
     }
+
+
     catch (PDOException $e) {
+        $db->rollBack();
         return false;
     }
 
 }
 
-function post($fileName, $fileType) {
-
-    try {
-        $db = myDatabase();
-        $sql = $db->prepare("INSERT INTO media (nomFichierMedia,typeMedia) VALUES (:fileName,:fileType)");
-        $sql->bindParam(':fileName', $fileName, PDO::PARAM_STR);
-        $sql->bindParam(':fileType', $fileType, PDO::PARAM_STR);
-        $sql->execute();
-        return true;
-
-    }
-    catch (PDOException $e) {
-        return false;
-    }
-
-}
-
-function getNamePost()
+function getPostAndAssociatedMedias()
 {
     try {
         $db = myDatabase();
-        $sql = $db->prepare("SELECT nomFichierMedia FROM media ");
+        $sql = $db->prepare("SELECT idPost FROM Post ");
         $sql->execute();
         $result = $sql->fetchAll();
+        for($i=0;$i<count($result);$i++) {
+            $sql = $db->prepare("SELECT nomFichierMedia FROM media WHERE idPost = :idPostMedia");
+            $sql->bindParam(':idPostPost', $result[$i], PDO::PARAM_STR);
+            $sql->fetchAll();
+            $sql->execute();
+        }
         return $result;
 
     }
@@ -80,4 +89,6 @@ function getNamePost()
         return false;
     }
 }
+
+
 ?>
